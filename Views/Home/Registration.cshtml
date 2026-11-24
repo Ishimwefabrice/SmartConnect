@@ -1,0 +1,106 @@
+@model smartconnect.Models.StudentViewModel
+@{
+    ViewData["Title"] = "Student Management";
+}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Student Management System</h2>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Student Registration</h5>
+        </div>
+        <div class="card-body">
+            <form asp-controller="Home" asp-action="Registration" method="post">
+                <div asp-validation-summary="All" class="text-danger mb-3"></div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Student.StudentID" class="form-label">Registration Number</label>
+                        <input asp-for="Student.StudentID" class="form-control" placeholder="Enter registration number" />
+                        <span asp-validation-for="Student.StudentID" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Student.Name" class="form-label">Student Name</label>
+                        <input asp-for="Student.Name" class="form-control" placeholder="Enter student name" />
+                        <span asp-validation-for="Student.Name" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Student.Age" class="form-label">Age</label>
+                        <input asp-for="Student.Age" type="number" class="form-control" placeholder="Enter age" />
+                        <span asp-validation-for="Student.Age" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Student.Course" class="form-label">Course</label>
+                        <select asp-for="Student.Course" class="form-select">
+                            <option value="">Select Course</option>
+                            <option value="Computer Science">Computer Science</option>
+                            <option value="Information Technology">Information Technology</option>
+                            <option value="Software Engineering">Software Engineering</option>
+                            <option value="Information Systems">Information Systems</option>
+                        </select>
+                        <span asp-validation-for="Student.Course" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <button type="submit" class="btn btn-primary">Save Student</button>
+                    <button type="reset" class="btn btn-secondary">Clear</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card shadow">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">Registered Students</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>ID</th>
+                            <th>Registration Number</th>
+                            <th>Student Name</th>
+                            <th>Age</th>
+                            <th>Course</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Students != null && Model.Students.Any())
+                        {
+                            var counter = 1;
+                            foreach (var item in Model.Students)
+                            {
+                                <tr>
+                                    <td>@counter</td>
+                                    <td>@item.StudentID</td>
+                                    <td>@item.Name</td>
+                                    <td>@item.Age</td>
+                                    <td>@item.Course</td>
+                                    <td>
+                                        <button type="button" class="btn btn-warning btn-sm">Edit</button>
+                                        <button type="button" class="btn btn-danger btn-sm">Delete</button>
+                                    </td>
+                                </tr>
+                                counter++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center text-muted">No registered students found.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
